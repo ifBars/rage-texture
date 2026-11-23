@@ -60,30 +60,9 @@ descriptor generation. Reload the catalog afterward. Identical digests retain
 the generation and cache. A failed replacement preserves the previous snapshot.
 `refresh()` reparses the source while retaining the selected history snapshot.
 
-## Validation and remaining coverage
+## Coverage
 
-- Classic BC1/3/4/5 differential: 3,020 synthetic cases, including 1,733 exact
-  byte/label matches and 1,152 matching refusals. Another 135 cases explicitly
-  refuse unavailable values that Python can replace with guesses.
-- BPTC differential: all 14 BC6H modes and 286 BC7 ranks, randomized custom
-  tables and provisional/inferred cases match Leonida where supported. See
-  HISTORY_BPTC_REVIEW.md and HISTORY_CLASSIC_REVIEW.md for exact scope.
-- Real stratified chunks across four supplied stores: strict mode has 16 byte
-  matches and 42 mutual refusals; provisional mode has 27 byte matches and 31
-  mutual refusals. Refusals are not counted as successful decoded output.
-- Real provisional external-history coverage now includes 11 BC6H and 73 BC7
-  byte matches against Leonida, with zero mismatches or decoded-cache use.
-  Refused/uncovered samples remain separate; see HISTORY_BPTC_REVIEW.md.
-- Confirmed-depth checks use each colour channel's required BC6H delta width;
-  a regression covers both false refusal and insufficient green precision.
-- Real BC6H/BC7 successful extraction with external confirmed histories remains
-  unverified. Required local history entries are unavailable in the measured
-  set. Synthetic custom-table success is separate evidence.
-- Python can guess missing or shallow BC7 endpoint history. This library
-  refuses unavailable bits, including in provisional mode. That is an explicit
-  coverage difference and still matters to the full-parity release gate.
-
-The Leonida adapter now supports custom histories, fixed strict/provisional
-policy and leading mip counts. Real three-mip cube and array DDS outputs match
-Leonida. Leading mip selection preserves every face/slice and uses the full
-source allocation layout; it does not reinterpret truncated source data.
+The built-in tables do not independently confirm the original BC6H/BC7 initial
+histories for the tested build. Fitted decoder agreement is compatibility
+evidence; it does not establish original-pixel accuracy. Missing dependencies
+remain errors under the confirmed policy.

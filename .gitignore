@@ -12,3 +12,7 @@
 **/.venv/
 *.whl
 *.pyd
+
+# Local project instructions and research notes
+/AGENTS.md
+/internal/

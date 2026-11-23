@@ -9,7 +9,7 @@ bcpack-rs, with attribution. The combined project is GPL-3.0-only.
 
 **Early development.** Tested against one Xbox build. Independent confirmation
 of the original BC6H/BC7 initial histories is still open, and PS5/PC adapters
-aren't implemented. See the [remaining gates](FEATURE_PARITY.md).
+aren't implemented. Multi-mip volumes and broader build coverage also remain open.
 
 ## What works
 
@@ -90,10 +90,6 @@ writes and fsync measured 29.0x. These use warm filesystem cache and aren't a
 whole-corpus speed estimate. An overall SixNG speed lead hasn't been established.
 [Benchmarks](BENCHMARKS.md) include timing boundaries, fingerprints and controls.
 
-- [Corpus QA](CORPUS_QA.md) and [consumer QA](CONSUMER_QA.md)
-- [Format coverage](FORMAT_GAPS.md) and [BC6H accuracy](ACCURACY.md)
-- [History research](PUBLIC_HISTORY_RESEARCH.md) and [release gates](FEATURE_PARITY.md)
-
 ## Cache behaviour
 
 The decoded cache belongs to one store, source generation and decode policy.
@@ -116,7 +112,7 @@ cargo test --locked --all-targets
 ```
 
 The tests use synthetic fixtures. External-corpus scripts need your own local
-inputs; see the linked QA documents for their scope and validation limits.
+inputs; run each script with `--help` for inputs and options.
 
 ## License and credits
 

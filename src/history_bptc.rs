@@ -2,8 +2,7 @@
 //!
 //! Adapted from Leonida `tools/bcpack.py` (`_bc6h_blocks`, `_bc7_check`,
 //! `_bc7_rebuild`) and `tools/bcpack_tables_bptc.py` at revision
-//! `aa2988cc555bad7ecd508b48a702adbb32fe7c95`; the parent reports the latest
-//! pinned history/texture files as unchanged. Leonida is GPL-3.0-or-later;
+//! `aa2988cc555bad7ecd508b48a702adbb32fe7c95`. Leonida is GPL-3.0-or-later;
 //! this combined distribution is GPL-3.0-only. The BPTC partition, anchor and
 //! signature tables below are public D3D11/Khronos specification data plus the
 //! BC7 lane-15 signature permutation from the same upstream file.
