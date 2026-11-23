@@ -18,6 +18,7 @@ aren't implemented. Multi-mip volumes and broader build coverage also remain ope
 - DDS export preserving format, compressed blocks, HDR, mip chains and slices.
 - Measured Gfx10 layouts for 2D textures, arrays, cubemaps and single-mip volumes.
 - Typed PNG previews, full-precision BC6H half-float decoding, and batch DDS export.
+- A [local research MCP](integrations/mcp/) to find texture keys in game stores, inspect crops and read lettering with OCR.
 - Optional per-store caching, source-change checks and explicit refresh.
 - Python bindings and a [Leonida adapter](integrations/leonida/README.md).
 

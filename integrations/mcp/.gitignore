@@ -1,0 +1,9 @@
+node_modules/
+__pycache__/
+config.local.json
+*.rpf
+*.ttpf
+*.dds
+*.png
+*.bin
+*.jsonl

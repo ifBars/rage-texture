@@ -45,6 +45,17 @@ jobs:
           uv pip install --python "$PYBIN" dist/*.whl
           "$PYBIN" -m unittest discover -s bindings/python/tests -v
           "$PYBIN" -m unittest discover -s integrations/leonida -p 'test_*.py' -v
+      - uses: oven-sh/setup-bun@v2
+        if: matrix.python == '3.12'
+      - name: Test the MCP over stdio
+        if: matrix.python == '3.12'
+        run: |
+          PYBIN="$PWD/.venv/bin/python"
+          if [[ "$RUNNER_OS" == Windows ]]; then PYBIN="$(cygpath -w "$PWD/.venv/Scripts/python.exe")"; fi
+          uv pip install --python "$PYBIN" pillow
+          cd integrations/mcp
+          bun install --frozen-lockfile
+          RAGE_RESEARCH_PYTHON="$PYBIN" bun test
   bc6h-oracle:
     runs-on: ubuntu-latest
     steps:
