@@ -1,0 +1,23 @@
+[package]
+name = "rage-texture-python"
+version = "0.1.0"
+edition = "2024"
+license = "GPL-3.0-only"
+description = "Optional, experimental PyO3 bindings for the rage-texture core"
+publish = false
+
+[lib]
+name = "_native"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "=0.30.1", features = ["extension-module", "abi3-py310"] }
+rage-texture = { path = "../.." }
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+
+# Keep this binding crate independent from the parent crate's lockfile and
+# workspace state; it is built separately by maturin.
+[workspace]

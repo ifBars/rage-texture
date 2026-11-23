@@ -1,0 +1,38 @@
+diff --git a/crates/sixng-core/src/bc6h.rs b/crates/sixng-core/src/bc6h.rs
+index 58501d2..cdccb32 100644
+--- a/crates/sixng-core/src/bc6h.rs
++++ b/crates/sixng-core/src/bc6h.rs
+@@ -71,10 +71,11 @@ fn unquantize(x: i32, bits: u32, signed: bool) -> i32 {
+ fn finish(v: i32, signed: bool) -> u16 {
+     if !signed {
+         ((v * 31) >> 6) as u16
+-    } else if v < 0 {
+-        0x8000 | ((-v * 31) >> 5) as u16
+     } else {
+-        ((v * 31) >> 5) as u16
++        // Select the sign after scaling, as finish_unquantize specifies.
++        // A negative interpolant that truncates to zero must become +0.
++        let scaled = if v < 0 { -((-v * 31) >> 5) } else { (v * 31) >> 5 };
++        if scaled < 0 { 0x8000 | (-scaled) as u16 } else { scaled as u16 }
+     }
+ }
+ 
+@@ -133,6 +134,18 @@ mod tests {
+     use super::*;
+     use crate::bc6pack::pack;
+ 
++    #[test]
++    fn signed_interpolants_that_scale_to_zero_are_positive_zero() {
++        // BC6H's finish_unquantize scales first, then selects the sign.
++        assert_eq!(finish(-1, true), 0x0000);
++        assert_eq!(finish(1, true), 0x0000);
++        assert_eq!(finish(-2, true), 0x8001);
++        // Synthetic two-region block: pixel 2 green interpolates to -1.
++        let block = [0x40, 0xb1, 0x03, 0xc8, 0xf6, 0x86, 0xae, 0x69,
++                     0x17, 0xd5, 0x16, 0xba, 0x88, 0x58, 0xfd, 0xe7];
++        assert_eq!(decode_block(&block, true)[2][1], 0x0000);
++    }
++
+     /// One-region block: endpoint fields w, x on all channels; pixel 0 at w, pixel 15 at x, pixel 5 halfway (weight 34).
+     fn block(mode: u8, w: u16, x: u16) -> [u8; 16] {
+         let mut f = Fields { mode, ep: [[w; 3], [x; 3], [0; 3], [0; 3]], ..Default::default() };

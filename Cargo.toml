@@ -1,0 +1,26 @@
+[package]
+name = "rage-texture"
+version = "0.1.0"
+edition = "2024"
+license = "GPL-3.0-only"
+description = "RDS5/TTPF texture extraction with DDS export and explicit decode provenance"
+repository = "https://github.com/ifBars/rage-texture"
+readme = "README.md"
+
+[dependencies]
+bcpack-rs = { git = "https://github.com/Ahmet-Dedeler/bcpack-rs", rev = "5bf5cc56ed56f1ababf1f9592300bd182ff90bd8", default-features = false }
+flate2 = { version = "1.1", default-features = false, features = ["zlib-rs"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+same-file = "1.0"
+texture2ddecoder = "0.1.2"
+png = "0.18"
+tempfile = "3"
+
+[dev-dependencies]
+ddsfile = "=0.5.2"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1

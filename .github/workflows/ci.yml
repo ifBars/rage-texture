@@ -1,0 +1,61 @@
+name: Synthetic correctness and packaging
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  rust:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - run: cargo fmt --check
+      - run: cargo clippy --locked --all-targets -- -D warnings
+      - run: cargo test --locked --all-targets
+  python:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ['3.10', '3.12']
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.1.0
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: astral-sh/setup-uv@v10.4.0
+      - run: cargo fmt --manifest-path bindings/python/Cargo.toml --check
+      - run: cargo clippy --locked --manifest-path bindings/python/Cargo.toml --all-targets -- -D warnings
+      - run: uvx --from maturin==1.16.0 maturin build --release --locked --manifest-path bindings/python/Cargo.toml --out dist
+      - name: Build source package and check artifacts
+        run: |
+          uvx --from maturin==1.16.0 maturin sdist --manifest-path bindings/python/Cargo.toml --out dist
+          python scripts/check_python_artifacts.py --directory dist
+      - name: Install wheel and test Python APIs
+        run: |
+          python -m venv .venv
+          PYBIN=.venv/bin/python
+          if [[ "$RUNNER_OS" == Windows ]]; then PYBIN=.venv/Scripts/python.exe; fi
+          uv pip install --python "$PYBIN" dist/*.whl
+          "$PYBIN" -m unittest discover -s bindings/python/tests -v
+          "$PYBIN" -m unittest discover -s integrations/leonida -p 'test_*.py' -v
+  bc6h-oracle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Build independent reference and native test helper
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/iOrange/bcdec/80859ed3b7afb1c527a2a99d70c61457bea72d0c/bcdec.h -o "$RUNNER_TEMP/bcdec.h"
+          cc -O2 -I "$RUNNER_TEMP" scripts/bc6h_oracle.c -o "$RUNNER_TEMP/bc6h_reference"
+          cargo build --release --locked --example bc6h_oracle
+      - name: Compare exact half-float results
+        run: python scripts/verify_bc6h.py --native target/release/examples/bc6h_oracle --reference "$RUNNER_TEMP/bc6h_reference" --out "$RUNNER_TEMP/bc6h-parity.json" --per-mode 8192

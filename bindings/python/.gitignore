@@ -1,0 +1,9 @@
+target/
+dist/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+python/rage_texture/_native*.pyd
+python/rage_texture/_native*.so
+python/rage_texture/_native*.dylib

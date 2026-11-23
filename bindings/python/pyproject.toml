@@ -1,0 +1,35 @@
+[build-system]
+requires = ["maturin>=1.9,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "rage-texture"
+version = "0.1.0"
+description = "Experimental optional Python bindings for the rage-texture RDS5/TTPF library"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "GPL-3.0-only" }
+classifiers = [
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+]
+dependencies = []
+
+[tool.maturin]
+bindings = "pyo3"
+python-source = "python"
+module-name = "rage_texture._native"
+exclude = [
+    { path = "dist/**", format = "sdist" },
+    { path = "target/**", format = "sdist" },
+    { path = "**/__pycache__/**", format = "sdist" },
+    { path = "**/*.whl", format = "sdist" },
+]
+include = [{ path = "rage_texture/THIRD_PARTY_NOTICES.md", format = "wheel" }]

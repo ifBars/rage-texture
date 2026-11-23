@@ -1,0 +1,12 @@
+[package]
+name = "bc7-current-reference"
+version = "0.1.0"
+edition = "2021"
+publish = false
+license = "GPL-3.0-only"
+description = "Tiny chunk-hash reference over the current SixNG BC7 table revision"
+
+[dependencies]
+sixng-core = { git = "https://github.com/holdmysocks/SixNG", rev = "d724355df2398a646eb771d6d3da17c3b1bafe11", default-features = false }
+serde_json = "1"
+sha2 = "0.10"

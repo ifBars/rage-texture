@@ -1,0 +1,11 @@
+[package]
+name="rage-sixng-reference"
+version="0.0.0"
+edition="2024"
+publish=false
+license="GPL-3.0-only"
+
+[dependencies]
+sixng-core={git="https://github.com/holdmysocks/SixNG",rev="7881042c294f3eeea1e8153e7bcafd84f9d787b9"}
+sha2="0.10"
+serde_json="1"

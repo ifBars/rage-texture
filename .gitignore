@@ -1,0 +1,14 @@
+/target/
+**/target/
+**/__pycache__/
+/work/
+/dist/
+**/dist/
+*.ttpf
+*.rpf
+*.dds
+*.png
+*.bin
+**/.venv/
+*.whl
+*.pyd
